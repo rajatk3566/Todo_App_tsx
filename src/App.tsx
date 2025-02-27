@@ -1,4 +1,4 @@
-import Todo from 'src/components/Todo'
+import Todo from '@components/Todo'
 export default function App() {
   return (
     <>

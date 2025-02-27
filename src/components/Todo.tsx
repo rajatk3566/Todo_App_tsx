@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import TodolistItem from "src/components/TodolistIiem";
+import TodolistItem from "@components/TodolistIiem";
 
 interface TodoItem {
   text: string;
