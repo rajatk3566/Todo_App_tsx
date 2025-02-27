@@ -8,11 +8,18 @@ interface TodoItem {
 
 type FilterType = "all" | "active" | "completed";
 
+interface EditInfo {
+  index: number;
+  text: string;
+}
+
 const Todo: React.FC = () => {
   const [notes, setNotes] = useState<TodoItem[]>([]);
   const [filter, setFilter] = useState<FilterType>("all");
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [editing, setEditing] = useState<EditInfo | null>(null);
   let inputRef = useRef<HTMLInputElement>(null);
+  let editInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const current_note = localStorage.getItem("notess");
@@ -46,6 +53,28 @@ const Todo: React.FC = () => {
     let updatedNotes = notes.filter((_, i) => i !== index);
     setNotes(updatedNotes);
     localStorage.setItem("notess", JSON.stringify(updatedNotes));
+  };
+
+  const startEditTodo = (index: number, text: string) => {
+    setEditing({ index, text });
+  };
+
+  const saveEditTodo = () => {
+    if (editing && editInputRef.current) {
+      const newText = editInputRef.current.value;
+      if (newText.trim() !== "") {
+        const updatedNotes = notes.map((note, i) =>
+          i === editing.index ? { ...note, text: newText } : note
+        );
+        setNotes(updatedNotes);
+        localStorage.setItem("notess", JSON.stringify(updatedNotes));
+        setEditing(null);
+      }
+    }
+  };
+
+  const cancelEdit = () => {
+    setEditing(null);
   };
 
   const filteredNotes = notes.filter((note) => {
@@ -116,14 +145,44 @@ const Todo: React.FC = () => {
         </form>
         <ol className="space-y-3">
           {filteredNotes.map((note, index) => (
-            <TodolistItem
-              key={index}
-              value={note.text}
-              index={index}
-              completed={note.completed || false}
-              onComplete={() => toggleComplete(index)}
-              onDelete={() => deleteTodo(index)}
-            />
+            <li key={index} className="bg-gray-100 w-full rounded-xl shadow-lg">
+              {editing && editing.index === index ? (
+                <div className="flex justify-between items-center rounded-md p-5">
+                  <div className="flex items-center flex-grow mr-3">
+                    <span className="flex-1/3 mr-2">{index + 1}.</span>
+                    <input
+                      type="text"
+                      className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
+                      defaultValue={editing.text}
+                      ref={editInputRef}
+                    />
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <button
+                      className="bg-green-500 text-white shadow-green-700 shadow-md rounded-lg hover:bg-green-600 p-2"
+                      onClick={saveEditTodo}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className="bg-gray-500 text-white shadow-gray-700 shadow-md rounded-lg ml-2 hover:bg-gray-600 p-2"
+                      onClick={cancelEdit}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <TodolistItem
+                  value={note.text}
+                  index={index}
+                  completed={note.completed || false}
+                  onComplete={() => toggleComplete(index)}
+                  onDelete={() => deleteTodo(index)}
+                  onEdit={() => startEditTodo(index, note.text)}
+                />
+              )}
+            </li>
           ))}
         </ol>
       </div>
