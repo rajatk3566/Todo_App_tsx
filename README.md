@@ -9,6 +9,27 @@ A simple Todo application built with TypeScript to manage tasks efficiently.
 - Filter todos by status (All, Completed, active)
 - Persistent storage using localStorage
 
+## Folder Structure
+```
+└── 📁Todo-App-Ts
+    └── 📁src
+        └── App.css
+        └── App.tsx
+        └── 📁components
+            └── Todo.tsx
+            └── TodolistIiem.tsx
+        └── index.css
+        └── main.tsx
+    └── index.html
+    └── package-lock.json
+    └── package.json
+    └── README.md
+    └── tsconfig.app.json
+    └── tsconfig.json
+    └── tsconfig.node.json
+    └── vite.config.ts
+```
+
 ## Installation
 
 1. Clone the repository:
@@ -31,24 +52,3 @@ A simple Todo application built with TypeScript to manage tasks efficiently.
 3. Click on tasks to mark them as completed.
 4. Use filters to view all, completed, or active tasks.
 5. Delete tasks if no longer needed.
-
-## Folder Structure
-```
-└── 📁Todo-App-Ts
-    └── 📁src
-        └── App.css
-        └── App.tsx
-        └── 📁components
-            └── Todo.tsx
-            └── TodolistIiem.tsx
-        └── index.css
-        └── main.tsx
-    └── index.html
-    └── package-lock.json
-    └── package.json
-    └── README.md
-    └── tsconfig.app.json
-    └── tsconfig.json
-    └── tsconfig.node.json
-    └── vite.config.ts
-```
